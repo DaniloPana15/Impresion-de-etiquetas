@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StickerPress Pro - Armador y Cotizador de Planchas</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Librería jsPDF para exportar el PDF a escala real -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>StickerPress Pro</h1>
+        <p>Armá, cotiza y exporta tus planchas de stickers a escala real para imprenta</p>
+    </header>
+
+    <main class="container">
+        <!-- COLUMNA IZQUIERDA: Configuración y Diseños -->
+        <section class="panel">
+            <h2>1. Configuración de la Hoja</h2>
+            
+            <div class="form-group">
+                <label for="sheet-type">Tipo de Formato y Entrega:</label>
+                <select id="sheet-type">
+                    <option value="super-a3-troquelada">Plancha Super A3 Troquelada (Área útil 30x44 cm) - $11,200 (Vinilo)</option>
+                    <option value="super-a3-lisa">Plancha Super A3 Lisa / Sin troquelar (32x47 cm) - $5,500 (OPP)</option>
+                    <option value="a4-lisa">Plancha A4 Lisa / Sin troquelar (21x29 cm) - $1,300 (Común)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="material-type">Material:</label>
+                <select id="material-type">
+                    <option value="vinilo">Vinilo Premium (Ideal troquelado)</option>
+                    <option value="opp">OPP Resistente al Agua</option>
+                    <option value="comun">Autoadhesivo Común / Papel</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="finish-type">Acabado:</label>
+                <select id="finish-type">
+                    <option value="troquelada">Plancha Troquelada (Lista para despegar)</option>
+                    <option value="lisa">Plancha Lisa (Cortás con tijera/cutter)</option>
+                    <option value="individuales">Stickers Individuales (+40% recargo)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity-sheets">Cantidad de Planchas:</label>
+                <input type="number" id="quantity-sheets" value="1" min="1" max="50">
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+
+            <h2>2. Agregar Diseños</h2>
+            
+            <div class="form-group">
+                <label>Plantillas Rápidas (Para dispensadores de filos):</label>
+                <div class="template-buttons">
+                    <button class="btn-template" data-img="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=300">💈 Logo Barbería</button>
+                    <button class="btn-template" data-img="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=300">✂️ Tijeras Pro</button>
+                    <button class="btn-template" data-img="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=300">🔥 Estilo Urbano</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="upload-image">Subir tu imagen (PNG / JPG):</label>
+                <input type="file" id="upload-image" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label for="sticker-width">Ancho del Sticker (cm): <span id="val-width">2.5</span> cm</label>
+                <input type="range" id="sticker-width" min="1" max="25" step="0.5" value="2.5">
+            </div>
+
+            <div class="form-group">
+                <label for="sticker-height">Alto del Sticker (cm): <span id="val-height">8.0</span> cm</label>
+                <input type="range" id="sticker-height" min="1" max="30" step="0.5" value="8.0">
+            </div>
+
+            <div class="form-group">
+                <label for="sticker-spacing">Separación entre stickers (mm): <span id="val-spacing">4</span> mm</label>
+                <input type="range" id="sticker-spacing" min="1" max="15" step="1" value="4">
+            </div>
+
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="black-background-toggle" checked> Forzar fondo negro (Ideal para dispensador Rapibarbe)
+                </label>
+            </div>
+
+            <button id="btn-add-sticker" class="btn-primary">➕ Agregar a la Plancha</button>
+            <button id="btn-clear-canvas" class="btn-danger" style="margin-top: 10px;">🗑️ Limpiar Plancha</button>
+        </section>
+
+        <!-- COLUMNA DERECHA: Mesa de trabajo y Cotización -->
+        <section class="preview-section">
+            <div class="canvas-container-box">
+                <div class="canvas-header-info">
+                    <span>Mesa de Trabajo (<span id="canvas-dims-text">30 x 44 cm</span>)</span>
+                    <span id="items-count">0 stickers colocados</span>
+                </div>
+                <!-- Simulación visual interactiva de la hoja de imprenta -->
+                <div id="print-canvas-area">
+                    <div id="canvas-placeholder-text">Tu plancha está vacía.<br>Sube una imagen o usa una plantilla.</div>
+                </div>
+            </div>
+
+            <div class="quotation-card">
+                <h3>Resumen de Cotización</h3>
+                <div class="quote-row">
+                    <span>Subtotal por plancha:</span>
+                    <strong id="price-unit">$11,200</strong>
+                </div>
+                <div class="quote-row">
+                    <span>Cantidad seleccionada:</span>
+                    <strong id="quote-qty">1 plancha(s)</strong>
+                </div>
+                <div class="quote-row total">
+                    <span>Total Final:</span>
+                    <strong id="price-total">$11,200</strong>
+                </div>
+                <p class="quote-note">⏱️ Demora estimada: 2 días hábiles una vez aprobado el archivo PDF.</p>
+                
+                <button id="btn-export-pdf" class="btn-success">📥 Exportar PDF a Escala Real (Listo para Imprenta)</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
