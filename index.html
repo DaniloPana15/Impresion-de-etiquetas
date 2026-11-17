@@ -3,128 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StickerPress Pro - Armador y Cotizador de Planchas</title>
+    <title>StickerPress Studio | Armador y Cotizador de Planchas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Librería jsPDF para exportar el PDF a escala real -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-    <header>
-        <h1>StickerPress Pro</h1>
-        <p>Armá, cotiza y exporta tus planchas de stickers a escala real para imprenta</p>
+    <!-- PORTADA / HERO SECTION -->
+    <header class="hero">
+        <div class="hero-glow"></div>
+        <nav class="navbar">
+            <div class="brand">
+                <span class="brand-dot"></span>
+                <span>StickerPress Studio</span>
+            </div>
+            <a href="#workspace" class="pill-btn pill-white">
+                <span>Ir al Armador</span>
+                <span class="arrow-circle">↗</span>
+            </a>
+        </nav>
+
+        <div class="hero-content">
+            <span class="hero-badge">Producción & Troquelado Profesional</span>
+            <h1>Diseñá, armá y cotizá tus planchas a escala real</h1>
+            <p>Configurá múltiples diseños para tus dispensadores o marca, calculá costos al instante y exportá el PDF vectorizado listo para imprenta.</p>
+            
+            <div class="hero-actions">
+                <a href="#workspace" class="pill-btn pill-white btn-lg">
+                    <span>Comenzar proyecto</span>
+                    <span class="arrow-circle">↘</span>
+                </a>
+                <a href="#pricing-rules" class="pill-btn pill-glass btn-lg">
+                    <span>Ver tarifas y reglas</span>
+                </a>
+            </div>
+
+            <!-- Tarjetas flotantes estilo UI moderna -->
+            <div class="hero-cards">
+                <div class="glass-card stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Área Útil Troquelado</span>
+                        <span class="mini-icon">📐</span>
+                    </div>
+                    <div class="stat-value">30 × 44 cm</div>
+                    <div class="stat-sub">Super A3 • Vinilo, OPP o Papel</div>
+                </div>
+
+                <div class="glass-card stat-card featured-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Tiempo de Entrega</span>
+                        <span class="mini-icon">⚡</span>
+                    </div>
+                    <div class="stat-value">48 hs hábiles</div>
+                    <div class="stat-sub">Una vez aprobado el PDF y pago</div>
+                </div>
+
+                <div class="glass-card stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Rendimiento Estándar</span>
+                        <span class="mini-icon">✂️</span>
+                    </div>
+                    <div class="stat-value">48 / 24 u.</div>
+                    <div class="stat-sub">En 5×5 cm (48u) o 7×7 cm (24u)</div>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <main class="container">
-        <!-- COLUMNA IZQUIERDA: Configuración y Diseños -->
-        <section class="panel">
-            <h2>1. Configuración de la Hoja</h2>
-            
-            <div class="form-group">
-                <label for="sheet-type">Tipo de Formato y Entrega:</label>
-                <select id="sheet-type">
-                    <option value="super-a3-troquelada">Plancha Super A3 Troquelada (Área útil 30x44 cm) - $11,200 (Vinilo)</option>
-                    <option value="super-a3-lisa">Plancha Super A3 Lisa / Sin troquelar (32x47 cm) - $5,500 (OPP)</option>
-                    <option value="a4-lisa">Plancha A4 Lisa / Sin troquelar (21x29 cm) - $1,300 (Común)</option>
-                </select>
-            </div>
+    <!-- ESPACIO DE TRABAJO PRINCIPAL -->
+    <main id="workspace" class="workspace-container">
+        <div class="section-header">
+            <h2>Configurador de Plancha</h2>
+            <p>Subí tus imágenes, ajustá medidas en centímetros y armá tu hoja combinando modelos.</p>
+        </div>
 
-            <div class="form-group">
-                <label for="material-type">Material:</label>
-                <select id="material-type">
-                    <option value="vinilo">Vinilo Premium (Ideal troquelado)</option>
-                    <option value="opp">OPP Resistente al Agua</option>
-                    <option value="comun">Autoadhesivo Común / Papel</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="finish-type">Acabado:</label>
-                <select id="finish-type">
-                    <option value="troquelada">Plancha Troquelada (Lista para despegar)</option>
-                    <option value="lisa">Plancha Lisa (Cortás con tijera/cutter)</option>
-                    <option value="individuales">Stickers Individuales (+40% recargo)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="quantity-sheets">Cantidad de Planchas:</label>
-                <input type="number" id="quantity-sheets" value="1" min="1" max="50">
-            </div>
-
-            <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0;">
-
-            <h2>2. Agregar Diseños</h2>
-            
-            <div class="form-group">
-                <label>Plantillas Rápidas (Para dispensadores de filos):</label>
-                <div class="template-buttons">
-                    <button class="btn-template" data-img="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=300">💈 Logo Barbería</button>
-                    <button class="btn-template" data-img="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=300">✂️ Tijeras Pro</button>
-                    <button class="btn-template" data-img="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=300">🔥 Estilo Urbano</button>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="upload-image">Subir tu imagen (PNG / JPG):</label>
-                <input type="file" id="upload-image" accept="image/*">
-            </div>
-
-            <div class="form-group">
-                <label for="sticker-width">Ancho del Sticker (cm): <span id="val-width">2.5</span> cm</label>
-                <input type="range" id="sticker-width" min="1" max="25" step="0.5" value="2.5">
-            </div>
-
-            <div class="form-group">
-                <label for="sticker-height">Alto del Sticker (cm): <span id="val-height">8.0</span> cm</label>
-                <input type="range" id="sticker-height" min="1" max="30" step="0.5" value="8.0">
-            </div>
-
-            <div class="form-group">
-                <label for="sticker-spacing">Separación entre stickers (mm): <span id="val-spacing">4</span> mm</label>
-                <input type="range" id="sticker-spacing" min="1" max="15" step="1" value="4">
-            </div>
-
-            <div class="form-group checkbox-group">
-                <label>
-                    <input type="checkbox" id="black-background-toggle" checked> Forzar fondo negro (Ideal para dispensador Rapibarbe)
-                </label>
-            </div>
-
-            <button id="btn-add-sticker" class="btn-primary">➕ Agregar a la Plancha</button>
-            <button id="btn-clear-canvas" class="btn-danger" style="margin-top: 10px;">🗑️ Limpiar Plancha</button>
-        </section>
-
-        <!-- COLUMNA DERECHA: Mesa de trabajo y Cotización -->
-        <section class="preview-section">
-            <div class="canvas-container-box">
-                <div class="canvas-header-info">
-                    <span>Mesa de Trabajo (<span id="canvas-dims-text">30 x 44 cm</span>)</span>
-                    <span id="items-count">0 stickers colocados</span>
-                </div>
-                <!-- Simulación visual interactiva de la hoja de imprenta -->
-                <div id="print-canvas-area">
-                    <div id="canvas-placeholder-text">Tu plancha está vacía.<br>Sube una imagen o usa una plantilla.</div>
-                </div>
-            </div>
-
-            <div class="quotation-card">
-                <h3>Resumen de Cotización</h3>
-                <div class="quote-row">
-                    <span>Subtotal por plancha:</span>
-                    <strong id="price-unit">$11,200</strong>
-                </div>
-                <div class="quote-row">
-                    <span>Cantidad seleccionada:</span>
-                    <strong id="quote-qty">1 plancha(s)</strong>
-                </div>
-                <div class="quote-row total">
-                    <span>Total Final:</span>
-                    <strong id="price-total">$11,200</strong>
-                </div>
-                <p class="quote-note">⏱️ Demora estimada: 2 días hábiles una vez aprobado el archivo PDF.</p>
+        <div class="workspace-grid">
+            <!-- COLUMNA IZQUIERDA: CONTROLES -->
+            <aside class="controls-column">
                 
-                <button id="btn-export-pdf" class="btn-success">📥 Exportar PDF a Escala Real (Listo para Imprenta)</button>
+                <!-- PASO 1: ADJUNTAR IMAGEN Y MEDIDAS -->
+                <div class="glass-panel">
+                    <div class="panel-title">
+                        <span class="step-num">01</span>
+                        <h3>Subir Diseño y Medidas</h3>
+                    </div>
+
+                    <div class="upload-dropzone" id="dropzone">
+                        <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" hidden>
+                        <div class="upload-icon">🖼️</div>
+                        <p id="file-label">Hacé clic o arrastrá tu imagen aquí</p>
+                        <span>PNG sin fondo, JPG o WebP (Alta resolución)</span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="sticker-w">Ancho (cm)</label>
+                            <input type="number" id="sticker-w" value="2.5" min="1" max="30" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="sticker-h">Alto (cm)</label>
+                            <input type="number" id="sticker-h" value="8.0" min="1" max="44" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label for="sticker-qty">Cantidad</label>
+                            <input type="number" id="sticker-qty" value="12" min="1" max="200">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="sticker-gap">Separación (mm)</label>
+                            <input type="number" id="sticker-gap" value="4" min="2" max="20">
+                        </div>
+                        <div class="input-group toggle-box">
+                            <label for="black-bg">Fondo Negro</label>
+                            <label class="switch">
+                                <input type="checkbox" id="black-bg" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button id="btn-add-design" class="pill-btn pill-white full-width">
+                        <span>Agregar diseño a la plancha</span>
+                        <span class="arrow-circle">+</span>
+                    </button>
+                </div>
+
+                <!-- LISTA DE DISEÑOS AGREGADOS (PARA ELIMINAR O GESTIONAR) -->
+                <div class="glass-panel">
+                    <div class="panel-title-between">
+                        <div class="panel-title">
+                            <span class="step-num">02</span>
+                            <h3>Diseños en Plancha (<span id="design-group-count">0</span>)</h3>
+                        </div>
+                        <button id="btn-clear-all" class="text-danger-btn">Vaciar todo</button>
+                    </div>
+                    
+                    <div id="designs-list" class="designs-list">
+                        <div class="empty-list-msg">Aún no agregaste diseños. Subí una imagen arriba para empezar.</div>
+                    </div>
+                </div>
+
+                <!-- PASO 3: FORMATO, MATERIAL Y COTIZACIÓN -->
+                <div class="glass-panel">
+                    <div class="panel-title">
+                        <span class="step-num">03</span>
+                        <h3>Acabado, Material y Cotización</h3>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="delivery-type">Tipo de Entrega y Acabado</label>
+                        <select id="delivery-type">
+                            <option value="troquelada">✂️ Plancha Troquelada (Super A3 • 30×44 cm útil)</option>
+                            <option value="individuales">🏷️ Stickers Individuales (+40% recargo sobre plancha)</option>
+                            <option value="lisa-super-a3">📄 Plancha Lisa Sin Troquelar (Super A3 • 32×47 cm)</option>
+                            <option value="lisa-a4">📄 Plancha Lisa Sin Troquelar (A4 • 21×29 cm)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="material-select">Material</label>
+                            <select id="material-select">
+                                <option value="vinilo">Vinilo</option>
+                                <option value="opp">OPP (Resistente al agua)</option>
+                                <option value="papel">Autoadhesivo Común</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="sheets-qty">Cant. Planchas</label>
+                            <input type="number" id="sheets-qty" value="1" min="1" max="100">
+                        </div>
+                    </div>
+
+                    <div class="quote-summary">
+                        <div class="quote-line">
+                            <span>Valor por plancha:</span>
+                            <span id="unit-sheet-price">$11.200</span>
+                        </div>
+                        <div class="quote-line" id="discount-badge-row" style="display: none;">
+                            <span>Tarifa mayorista (2 a 5+ planchas):</span>
+                            <span class="badge-green">Aplicada</span>
+                        </div>
+                        <div class="quote-line" id="surcharge-row" style="display: none;">
+                            <span>Recargo corte individual (+40%):</span>
+                            <span class="badge-amber">Incluido</span>
+                        </div>
+                        <div class="quote-line">
+                            <span>Costo aprox. por sticker:</span>
+                            <span id="per-sticker-cost">$0</span>
+                        </div>
+                        <div class="quote-total">
+                            <span>Total Estimado</span>
+                            <strong id="total-price">$11.200</strong>
+                        </div>
+                    </div>
+
+                    <button id="btn-export-pdf" class="pill-btn pill-primary full-width">
+                        <span>Descargar PDF para Imprenta</span>
+                        <span class="arrow-circle">↓</span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- COLUMNA DERECHA: MESA DE TRABAJO VISUAL -->
+            <section class="canvas-column">
+                <div class="glass-panel canvas-wrapper">
+                    <div class="canvas-toolbar">
+                        <div>
+                            <strong id="sheet-title-display">Super A3 Troquelada</strong>
+                            <span class="dims-pill" id="sheet-dims-display">Área útil: 30 × 44 cm</span>
+                        </div>
+                        <div class="canvas-stats">
+                            <span id="placed-counter">0 stickers en hoja</span>
+                            <span id="overflow-warning" class="warning-pill" style="display: none;">⚠️ Excede el área de la hoja</span>
+                        </div>
+                    </div>
+
+                    <div class="sheet-viewport">
+                        <div id="print-sheet" class="print-sheet">
+                            <div class="sheet-guide-label">ÁREA DE CORTE VECTORIAL (30 × 44 CM)</div>
+                            <div id="stickers-container" class="stickers-container"></div>
+                        </div>
+                    </div>
+
+                    <div class="canvas-footer-hint">
+                        <span>💡 Tip: Hacé clic en la <strong>×</strong> de cualquier sticker en la hoja para eliminarlo individualmente.</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SECCIÓN INFORMATIVA DE REGLAS Y PRECIOS -->
+        <section id="pricing-rules" class="rules-section">
+            <div class="section-header">
+                <h2>Guía de Precios y Especificaciones</h2>
+                <p>Condiciones vigentes para impresión y troquelado digital.</p>
+            </div>
+            <div class="rules-grid">
+                <div class="glass-panel rule-card">
+                    <h4>📄 Planchas Lisas (Sin cortar)</h4>
+                    <ul>
+                        <li><strong>A4 (21×29 cm)</strong> Autoadhesivo común: <span>$1.300</span></li>
+                        <li><strong>Super A3 (32×47 cm)</strong> Autoadhesivo común: <span>$2.200</span></li>
+                        <li><strong>Super A3 (32×47 cm)</strong> OPP (Agua): <span>$5.500</span></li>
+                    </ul>
+                </div>
+                <div class="glass-panel rule-card">
+                    <h4>✂️ Planchas Troqueladas (30×44 cm útil)</h4>
+                    <ul>
+                        <li><strong>1 Plancha:</strong> Papel $5.000 | OPP $7.000 | Vinilo $11.200</li>
+                        <li><strong>2 a 5 Planchas:</strong> Papel $4.000 | OPP $6.000 | Vinilo $8.400 c/u</li>
+                        <li><strong>Stickers Individuales:</strong> +40% sobre valor de plancha</li>
+                    </ul>
+                </div>
+                <div class="glass-panel rule-card">
+                    <h4>📁 Preparación y Tiempos</h4>
+                    <ul>
+                        <li><strong>Formato:</strong> Siempre en PDF (30×44 cm para múltiples diseños).</li>
+                        <li><strong>Vectorizado:</strong> Necesario para siluetas especiales fuera de círculo/rectángulo.</li>
+                        <li><strong>Demora:</strong> 2 días hábiles tras aprobación y pago.</li>
+                    </ul>
+                </div>
             </div>
         </section>
     </main>
